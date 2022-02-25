@@ -16,7 +16,7 @@ services:
     
   api:
     container_name: API
-    image: API/dockerfile
+    image: api/dockerfile
     depends_on:
       - db
     restart: always
@@ -30,7 +30,7 @@ services:
 
   react:
     container_name: REACT
-    image: REACT/dockerfile
+    image: react/dockerfile
     depends_on:
       - db
       - api
