@@ -77,7 +77,7 @@ app.get('/pastprojects/all', (req, res) => {
 
 app.post('/pastprojects/create', uploader.array('images', 3), (req, res) => {
     const upload = {
-        title : req.body.title,
+        title : req.body.text,
         path : req.files[0].path
     }
     const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
