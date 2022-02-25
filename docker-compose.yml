@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  db:
+    container_name: DB
+    image: mysql
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=portfolio
+      - MYSQL_ROOT_PASSWORD=pass
+    ports:
+      - '33:3306'
+    network_mode: bridge
+
+    
+  api:
+    container_name: API
+    image: API/dockerfile
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - 4000:4000
+    env_file:
+      - ./.env
+    network_mode: bridge
+    volumes:
+      - C:/Users/JoshManik/Photos:/vol
+
+  react:
+    container_name: REACT
+    image: REACT/dockerfile
+    depends_on:
+      - db
+      - api
+    restart: always
+    ports:
+      - "8080:80"
+    network_mode: bridge
