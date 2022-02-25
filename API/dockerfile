@@ -2,11 +2,12 @@ FROM node:16.13.0
 
 WORKDIR /Portfolio-API 
 
-
-RUN npm i express multer dotenv mysql2 cors
+COPY . .
 
 RUN git clone https://github.com/joshManik/Portfolio-API
 
+RUN npm install i
+
 EXPOSE 4000
 
-CMD node server.js
+CMD node serverTester.js
