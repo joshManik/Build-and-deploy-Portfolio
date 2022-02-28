@@ -26,7 +26,7 @@ const DB = mysql.createConnection({
 
 DB.connect()
 
-// Create Inital Tables upon start updated
+// Create Inital Tables upon start updated another update
 
 const initialQuery = `CREATE TABLE IF NOT EXISTS ${DB_TABLE} (
     id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
