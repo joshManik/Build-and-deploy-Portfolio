@@ -1,4 +1,8 @@
 version: '3.8'
+
+volumes:
+  uploads:
+
 services:
   db:
     container_name: DB
@@ -21,7 +25,6 @@ services:
       context: .
       dockerfile: ./api/dockerfile
 
-
     depends_on:
       - db
     restart: always
@@ -31,7 +34,8 @@ services:
       - ./.env
     network_mode: bridge
     volumes:
-      - C:/Users/JoshManik/Photos:/vol
+      - uploads:/uploads
+
 
   react:
     container_name: REACT
@@ -47,3 +51,5 @@ services:
     ports:
       - "8080:80"
     network_mode: bridge
+    volumes:
+      - uploads:/uploads
