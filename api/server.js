@@ -8,7 +8,7 @@ const uploader = multer({ dest : './uploads'});
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ credentials: true }))
 
 
 require('dotenv').config();
