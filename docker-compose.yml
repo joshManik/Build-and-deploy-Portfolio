@@ -11,8 +11,8 @@ services:
       - SYS_NICE
     restart: always
     environment:
-      - MYSQL_DATABASE=portfolio
-      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
       - '33:3306'
     network_mode: bridge
