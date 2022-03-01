@@ -3,7 +3,7 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const multer = require('multer');
 
-const uploader = multer({ dest : './uploads'});
+const uploader = multer({ dest : './public/images'});
 
 const app = express();
 
@@ -37,6 +37,8 @@ DB.query(initialQuery, (err) => {
     if (err) throw err;
     console.log("Created inital table")
 });
+
+app.use(express.static('public'));
 
 app.get('/pastproject/:id', (req, res) => {
     QUERY = `SELECT * FROM ${DB_TABLE} WHERE id = ${req.params.id}`
