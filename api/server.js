@@ -5,7 +5,7 @@ const multer = require('multer');
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, './uploads')
+      cb(null, './images')
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname)
@@ -89,7 +89,7 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
 
     const upload = {
         title : req.body.text,
-        path : "http://localhost:4000/" + req.files[0].path + ".png"
+        path : "http://localhost:4000/" + req.files[0].path
     }
 
     const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
@@ -99,7 +99,6 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
 
         console.log(row)
 
-        res.send(row)
     })
 
     res.send(upload)
