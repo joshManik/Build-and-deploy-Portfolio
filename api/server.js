@@ -3,7 +3,30 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const multer = require('multer');
 
-const uploader = multer({ dest : './images'});
+const imageStorage = multer.diskStorage({
+    // Destination to store image     
+    destination: './images', 
+      filename: (req, file, cb) => {
+          cb(null, file.fieldname + '_' + Date.now() 
+             + path.extname(file.originalname))
+            // file.fieldname is name of the field (image)
+            // path.extname get the uploaded file extension
+    }
+});
+
+const imageUpload = multer({
+    storage: imageStorage,
+    limits: {
+      fileSize: 1000000 // 1000000 Bytes = 1 MB
+    },
+    fileFilter(req, file, cb) {
+      if (!file.originalname.match(/\.(png|jpg)$/)) { 
+         // upload only png and jpg format
+         return cb(new Error('Please upload a Image'))
+       }
+     cb(undefined, true)
+  }
+}) 
 
 const app = express();
 
@@ -49,7 +72,7 @@ app.get('/pastproject/:id', (req, res) => {
     })
 });
 
-app.put('/pastproject/:id', uploader.array('images', 3), (req, res) => {
+app.put('/pastproject/:id', imageUpload.array('images', 3), (req, res) => {
     const update = {
         title : req.body.title, 
         path : req.files[0].path 
@@ -77,11 +100,11 @@ app.get('/pastprojects/all', (req, res) => {
     });
 });
 
-app.post('/pastprojects/create', uploader.array('images', 3), (req, res) => {
+app.post('/pastprojects/create', imageUpload.array('images', 3), (req, res) => {
 
     const upload = {
         title : req.body.text,
-        path : "http://localhost:4000/" + req.files[0].path
+        path : "http://localhost:4000/" + req.files[0].path + ".png"
     }
 
     const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
