@@ -80,9 +80,9 @@ app.get('/pastprojects/all', (req, res) => {
 app.post('/pastprojects/create', (req, res) => {
     const upload = {
         title : req.body.text,
-        image1 : req.body.image1,
-        path : req.files[0].path
+        image1 : req.body.image1
     }
+    console.log(req.body)
     // const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
     // DB.query(QUERY, upload, (err, row) => {
     //     if (err) throw err;
