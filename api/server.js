@@ -89,7 +89,8 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
 
     const upload = {
         title : req.body.text,
-        path : "http://localhost:4000/" + req.files[0].path
+        path1 : "http://localhost:4000/" + req.files[0].path,
+        path2 : "http://localhost:4000/" + req.files[1].path
     }
 
     const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
