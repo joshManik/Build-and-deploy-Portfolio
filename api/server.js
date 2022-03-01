@@ -13,30 +13,30 @@ app.use(cors({ credentials: true }))
 
 require('dotenv').config();
 
-// const DB_TABLE = process.env.DB_TABLE_NAME
+const DB_TABLE = process.env.DB_TABLE_NAME
 
 
-// const DB = mysql.createConnection({
-//     host : process.env.DB_HOST,
-//     user : process.env.DB_USER,
-//     password : process.env.DB_PASSWORD,
-//     database : process.env.DB_NAME,
-//     port : 33
-// })
+const DB = mysql.createConnection({
+    host : process.env.DB_HOST,
+    user : process.env.DB_USER,
+    password : process.env.DB_PASSWORD,
+    database : process.env.DB_NAME,
+    port : 33
+})
 
-// DB.connect()
+DB.connect()
 
 // Create Inital Tables upon start updated another update
 
-// const initialQuery = `CREATE TABLE IF NOT EXISTS ${DB_TABLE} (
-//     id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
-//     title VARCHAR(255) NOT NULL,
-//     path VARCHAR(255) NOT NULL
-// )`
-// DB.query(initialQuery, (err) => {
-//     if (err) throw err;
-//     console.log("Created inital table")
-// });
+const initialQuery = `CREATE TABLE IF NOT EXISTS ${DB_TABLE} (
+    id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    path VARCHAR(255) NOT NULL
+)`
+DB.query(initialQuery, (err) => {
+    if (err) throw err;
+    console.log("Created inital table")
+});
 
 app.use('/images', express.static(__dirname + '/images'));
 
@@ -83,14 +83,14 @@ app.post('/pastprojects/create', (req, res) => {
         image1 : req.body.image1
     }
     console.log(req.body)
-    // const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
-    // DB.query(QUERY, upload, (err, row) => {
-    //     if (err) throw err;
+    const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
+    DB.query(QUERY, upload, (err, row) => {
+        if (err) throw err;
 
-    //     console.log(row)
+        console.log(row)
 
-    //     res.send(row)
-    // })
+        res.send(row)
+    })
 
     res.send(upload)
 })
