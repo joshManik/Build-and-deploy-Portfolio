@@ -38,7 +38,7 @@ require('dotenv').config();
 //     console.log("Created inital table")
 // });
 
-app.use(express.static('public'));
+app.use('/images', express.static(__dirname + '/images'));
 
 app.get('/pastproject/:id', (req, res) => {
     QUERY = `SELECT * FROM ${DB_TABLE} WHERE id = ${req.params.id}`
@@ -51,7 +51,7 @@ app.get('/pastproject/:id', (req, res) => {
 
 app.put('/pastproject/:id', uploader.array('images', 3), (req, res) => {
     const update = {
-        title : req.body.title,
+        title : req.body.title, 
         path : req.files[0].path 
     }
     QUERY = `UPDATE ${DB_TABLE} SET ? WHERE id = ${req.params.id}`
@@ -77,19 +77,22 @@ app.get('/pastprojects/all', (req, res) => {
     });
 });
 
-app.post('/pastprojects/create', uploader.array('images', 3), (req, res) => {
+app.post('/pastprojects/create', (req, res) => {
     const upload = {
         title : req.body.text,
+        image1 : req.body.image1,
         path : req.files[0].path
     }
-    const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
-    DB.query(QUERY, upload, (err, row) => {
-        if (err) throw err;
+    // const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
+    // DB.query(QUERY, upload, (err, row) => {
+    //     if (err) throw err;
 
-        console.log(row)
+    //     console.log(row)
 
-        res.send(row)
-    })
+    //     res.send(row)
+    // })
+
+    res.send(upload)
 })
 
 app.listen(process.env.SERVER_PORT, () => {
