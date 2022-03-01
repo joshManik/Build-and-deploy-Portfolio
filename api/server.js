@@ -3,30 +3,15 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const multer = require('multer');
 
-const imageStorage = multer.diskStorage({
-    // Destination to store image     
-    destination: './images', 
-      filename: (req, file, cb) => {
-          cb(null, file.fieldname + '_' + Date.now() 
-             + path.extname(file.originalname))
-            // file.fieldname is name of the field (image)
-            // path.extname get the uploaded file extension
-    }
-});
-
-const imageUpload = multer({
-    storage: imageStorage,
-    limits: {
-      fileSize: 1000000 // 1000000 Bytes = 1 MB
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads')
     },
-    fileFilter(req, file, cb) {
-      if (!file.originalname.match(/\.(png|jpg)$/)) { 
-         // upload only png and jpg format
-         return cb(new Error('Please upload a Image'))
-       }
-     cb(undefined, true)
-  }
-}) 
+    filename: function (req, file, cb) {
+      cb(null, file.originalname)
+    }
+})
+var upload = multer({ storage: storage })
 
 const app = express();
 
@@ -72,7 +57,7 @@ app.get('/pastproject/:id', (req, res) => {
     })
 });
 
-app.put('/pastproject/:id', imageUpload.array('images', 3), (req, res) => {
+app.put('/pastproject/:id', upload.array('images', 3), (req, res) => {
     const update = {
         title : req.body.title, 
         path : req.files[0].path 
@@ -100,7 +85,7 @@ app.get('/pastprojects/all', (req, res) => {
     });
 });
 
-app.post('/pastprojects/create', imageUpload.array('images', 3), (req, res) => {
+app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
 
     const upload = {
         title : req.body.text,
