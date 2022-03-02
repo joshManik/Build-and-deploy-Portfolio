@@ -98,7 +98,7 @@ app.get('/pastprojects/all', (req, res) => {
 
 app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
     if (req.body.fileCount == 3){
-        upload = {
+        input = {
             title : req.body.title,
             paragraph_one : req.body.paragraph_one,
             paragraph_two : req.body.paragraph_two,
@@ -113,7 +113,7 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
             carousel : req.body.carousel
         }
     } if (req.body.fileCount == 2){
-        upload = {
+        input = {
             title : req.body.title,
             paragraph_one : req.body.paragraph_one,
             paragraph_two : req.body.paragraph_two,
@@ -127,7 +127,7 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
             carousel : req.body.carousel
         }
     } if (req.body.fileCount == 1) {
-        upload = {
+        input = {
             title : req.body.title,
             paragraph_one : req.body.paragraph_one,
             paragraph_two : req.body.paragraph_two,
@@ -141,9 +141,10 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
         }
     }
 
-    const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
+
+    const QUERY = `INSERT INTO ${DB_TABLE} VALUES ?`
     
-    DB.query(QUERY, upload, (err, row) => {
+    DB.query(QUERY, input, (err, row) => {
         if (err) throw err;
 
         console.log(row)
