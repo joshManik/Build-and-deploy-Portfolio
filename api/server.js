@@ -93,7 +93,7 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
         title : req.body.text,
         path1 : req.files[0].path,
         path2 : req.files[1].path,
-        path2 : req.files[2].path
+        path3 : req.files[2].path
     }
 
     const uploaderd = {
