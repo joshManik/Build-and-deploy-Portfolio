@@ -39,7 +39,18 @@ DB.connect()
 const initialQuery = `CREATE TABLE IF NOT EXISTS ${DB_TABLE} (
     id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
-    path VARCHAR(255) NOT NULL
+    paragraph_one TEXT NOT NULL,
+    paragraph_two TEXT NOT NULL,
+    tech_used VARCHAR(255) NOT NULL,
+    project_live BOOLEAN NOT NULL,
+    project_link VARCHAR(255),
+    github_live BOOLEAN NOT NULL,
+    github_link VARCHAR(255),
+    image1_path VARCHAR(255) NOT NULL,
+    image2_path VARCHAR(255),
+    image3_path VARCHAR(255),
+    carousel BOOLEAN NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`
 DB.query(initialQuery, (err) => {
     if (err) throw err;
@@ -86,24 +97,53 @@ app.get('/pastprojects/all', (req, res) => {
 });
 
 app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
-    for (let i = 0; i < req.body.fileCount; i ++){
-
-    }
-    const upload = {
-        title : req.body.text,
-        path1 : req.files[0].path,
-        path2 : req.files[1].path,
-        path3 : req.files[2].path
-    }
-
-    const uploaderd = {
-        title : req.body.text,
-        path : "http://localhost:4000/" + req.files[0].path
+    if (req.body.fileCount == 3){
+        upload = {
+            title : req.body.title,
+            paragraph_one : req.body.paragraph_one,
+            paragraph_two : req.body.paragraph_two,
+            tech_used : req.body.tech_used,
+            project_live : req.body.project_live,
+            project_link : req.body.project_link,
+            github_live : req.body.github_live,
+            github_link : req.body.github_link,
+            image1_path : req.files[0].path,
+            image2_path : req.files[1].path,
+            image3_path : req.files[2].path,
+            carousel : req.body.carousel
+        }
+    } if (req.body.fileCount == 2){
+        upload = {
+            title : req.body.title,
+            paragraph_one : req.body.paragraph_one,
+            paragraph_two : req.body.paragraph_two,
+            tech_used : req.body.tech_used,
+            project_live : req.body.project_live,
+            project_link : req.body.project_link,
+            github_live : req.body.github_live,
+            github_link : req.body.github_link,
+            image1_path : req.files[0].path,
+            image2_path : req.files[1].path,
+            carousel : req.body.carousel
+        }
+    } if (req.body.fileCount == 1) {
+        upload = {
+            title : req.body.title,
+            paragraph_one : req.body.paragraph_one,
+            paragraph_two : req.body.paragraph_two,
+            tech_used : req.body.tech_used,
+            project_live : req.body.project_live,
+            project_link : req.body.project_link,
+            github_live : req.body.github_live,
+            github_link : req.body.github_link,
+            image1_path : req.files[0].path,
+            carousel : req.body.carousel
+        }
     }
 
     const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
     
-    DB.query(QUERY, uploaderd, (err, row) => {
+    DB.query(QUERY, upload, (err, row) => {
         if (err) throw err;
 
         console.log(row)
