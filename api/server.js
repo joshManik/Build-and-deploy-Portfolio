@@ -29,7 +29,7 @@ const DB = mysql.createConnection({
     user : process.env.DB_USER,
     password : process.env.DB_PASSWORD,
     database : process.env.DB_NAME,
-    port : 3306
+    port : 33
 })
 
 DB.connect()
@@ -39,16 +39,8 @@ DB.connect()
 const initialQuery = `CREATE TABLE IF NOT EXISTS ${DB_TABLE} (
     id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
-    paragraph_one TEXT NOT NULL,
-    paragraph_two TEXT NOT NULL,
-    tech_used VARCHAR(255) NOT NULL,
-    project_live BOOLEAN NOT NULL,
-    project_link VARCHAR(255),
-    github_live BOOLEAN NOT NULL,
     github_link VARCHAR(255),
     image1_path VARCHAR(255) NOT NULL,
-    image2_path VARCHAR(255),
-    image3_path VARCHAR(255),
     carousel BOOLEAN NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`
@@ -57,7 +49,7 @@ DB.query(initialQuery, (err) => {
     console.log("Created inital table")
 });
 
-app.use('/images', express.static(__dirname + '/images'));
+app.use('/images', express.static(__dirname + 'api/images'));
 
 app.get('/pastproject/:id', (req, res) => {
     QUERY = `SELECT * FROM ${DB_TABLE} WHERE id = ${req.params.id}`
@@ -96,6 +88,21 @@ app.get('/pastprojects/all', (req, res) => {
     });
 });
 
+app.post('/create', upload.array('images', 3), (req, res) => {
+    const qr = `INSERT INTO ${DB_TABLE} SET ?`
+    var set = {
+        title : req.body.title,
+        github_link : req.body.github_link,
+        image1_path : req.files[0].path,
+        carousel : req.body.carousel
+    }
+    DB.query(qr, set, (err, result) => {
+        if (err) throw err;
+        res.send(result)
+    });
+
+})
+
 app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
     var fileCount = req.body.fileCount
     console.log(fileCount)
@@ -114,6 +121,16 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
             image3_path : req.files[2].path,
             carousel : req.body.carousel
         }
+
+        const QUERY = `INSERT INTO ${DB_TABLE} (title, github_link, image1_path, carousel) 
+                        VALUES (?, ?, ?, ?)`
+    
+        DB.query(QUERY, (req.body.title, req.body.github_link, req.files[0].path, req.body.carousel), (err, row) => {
+            if (err) throw err;
+    
+            console.log(row)
+    
+        })
     } if (fileCount == 2){
         var input = {
             title : req.body.title,
@@ -144,16 +161,16 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
     }
 
 
-    const QUERY = `INSERT INTO ${DB_TABLE} VALUES ?`
+    // const QUERY = `INSERT INTO ${DB_TABLE} VALUES ?`
     
-    DB.query(QUERY, input, (err, row) => {
-        if (err) throw err;
+    // DB.query(QUERY, input, (err, row) => {
+    //     if (err) throw err;
 
-        console.log(row)
+    //     console.log(row)
 
-    })
+    // })
 
-    res.send(upload)
+    res.send(input)
 })
 
 app.listen(process.env.SERVER_PORT, () => {
