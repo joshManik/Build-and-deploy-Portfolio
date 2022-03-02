@@ -86,11 +86,14 @@ app.get('/pastprojects/all', (req, res) => {
 });
 
 app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
+    for (let i = 0; i < req.body.fileCount; i ++){
 
+    }
     const upload = {
         title : req.body.text,
-        path1 : "http://178.62.92.215:4000/" + req.files[0].path,
-        path2 : req.files[1].path
+        path1 : req.files[0].path,
+        path2 : req.files[1].path,
+        path2 : req.files[2].path
     }
 
     const uploaderd = {
