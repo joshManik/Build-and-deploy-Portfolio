@@ -29,7 +29,7 @@ const DB = mysql.createConnection({
     user : process.env.DB_USER,
     password : process.env.DB_PASSWORD,
     database : process.env.DB_NAME,
-    port : 33
+    port : 3306
 })
 
 DB.connect()
@@ -39,6 +39,11 @@ DB.connect()
 const initialQuery = `CREATE TABLE IF NOT EXISTS ${DB_TABLE} (
     id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
     title VARCHAR(255) NOT NULL,
+    paragraph_one TEXT NOT NULL,
+    paragraph_two TEXT NOT NULL,
+    project_live BOOLEAN NOT NULL,
+    project_link VARCHAR(255),
+    github_live BOOLEAN NOT NULL,
     github_link VARCHAR(255),
     image1_path VARCHAR(255) NOT NULL,
     carousel BOOLEAN NOT NULL,
@@ -90,16 +95,26 @@ app.get('/pastprojects/all', (req, res) => {
 
 app.post('/create', upload.array('images', 3), (req, res) => {
     const qr = `INSERT INTO ${DB_TABLE} SET ?`
+    console.log("Server is here")
+    if (req.body.carousel == 'true') {
+        var carousel = 1
+    } else {
+        var carousel = 0
+    }
+
     var set = {
         title : req.body.title,
         github_link : req.body.github_link,
         image1_path : req.files[0].path,
-        carousel : req.body.carousel
+        carousel : carousel
     }
+
     DB.query(qr, set, (err, result) => {
         if (err) throw err;
-        res.send(result)
+        console.log(result)
     });
+
+    res.send(set)
 
 })
 
@@ -107,68 +122,118 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
     var fileCount = req.body.fileCount
     console.log(fileCount)
     if (fileCount == 3){
+
+        if (req.body.carousel == 'true') {
+            var carousel = 1
+        } else {
+            var carousel = 0
+        }
+
+        if (req.body.project_live == 'true') {
+            var project_live = 1
+        } else {
+            var project_live = 0
+        }
+
+        if (req.body.github_live == 'true') {
+            var github_live = 1
+        } else {
+            var github_live = 0
+        }
+
         var input = {
             title : req.body.title,
             paragraph_one : req.body.paragraph_one,
             paragraph_two : req.body.paragraph_two,
             tech_used : req.body.tech_used,
-            project_live : req.body.project_live,
+            project_live : project_live,
             project_link : req.body.project_link,
-            github_live : req.body.github_live,
+            github_live : github_live,
             github_link : req.body.github_link,
             image1_path : req.files[0].path,
             image2_path : req.files[1].path,
             image3_path : req.files[2].path,
-            carousel : req.body.carousel
+            carousel : carousel
         }
 
-        const QUERY = `INSERT INTO ${DB_TABLE} (title, github_link, image1_path, carousel) 
-                        VALUES (?, ?, ?, ?)`
-    
-        DB.query(QUERY, (req.body.title, req.body.github_link, req.files[0].path, req.body.carousel), (err, row) => {
-            if (err) throw err;
-    
-            console.log(row)
-    
-        })
     } if (fileCount == 2){
+
+        if (req.body.carousel == 'true') {
+            var carousel = 1
+        } else {
+            var carousel = 0
+        }
+
+        if (req.body.project_live == 'true') {
+            var project_live = 1
+        } else {
+            var project_live = 0
+        }
+
+        if (req.body.github_live == 'true') {
+            var github_live = 1
+        } else {
+            var github_live = 0
+        }
+
         var input = {
             title : req.body.title,
             paragraph_one : req.body.paragraph_one,
             paragraph_two : req.body.paragraph_two,
             tech_used : req.body.tech_used,
-            project_live : req.body.project_live,
+            project_live : project_live,
             project_link : req.body.project_link,
-            github_live : req.body.github_live,
+            github_live : github_live,
             github_link : req.body.github_link,
             image1_path : req.files[0].path,
             image2_path : req.files[1].path,
-            carousel : req.body.carousel
+            carousel : carousel
         }
+
     } if (fileCount == 1) {
+
+        if (req.body.carousel == 'true') {
+            var carousel = 1
+        } else {
+            var carousel = 0
+        }
+
+        if (req.body.project_live == 'true') {
+            var project_live = 1
+        } else {
+            var project_live = 0
+        }
+
+        if (req.body.github_live == 'true') {
+            var github_live = 1
+        } else {
+            var github_live = 0
+        }
+
         var input = {
             title : req.body.title,
             paragraph_one : req.body.paragraph_one,
             paragraph_two : req.body.paragraph_two,
             tech_used : req.body.tech_used,
-            project_live : req.body.project_live,
+            project_live : project_live,
             project_link : req.body.project_link,
-            github_live : req.body.github_live,
+            github_live : github_live,
             github_link : req.body.github_link,
             image1_path : req.files[0].path,
-            carousel : req.body.carousel
+            carousel : carousel
         }
+
     }
 
 
-    // const QUERY = `INSERT INTO ${DB_TABLE} VALUES ?`
+    const QUERY = `INSERT INTO ${DB_TABLE} SET ?`
     
-    // DB.query(QUERY, input, (err, row) => {
-    //     if (err) throw err;
+    DB.query(QUERY, input, (err, row) => {
+        if (err) throw err;
 
-    //     console.log(row)
+        console.log(row)
 
-    // })
+    })
 
     res.send(input)
 })
