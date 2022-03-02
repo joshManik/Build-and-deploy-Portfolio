@@ -97,8 +97,10 @@ app.get('/pastprojects/all', (req, res) => {
 });
 
 app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
-    if (req.body.fileCount == 3){
-        input = {
+    var fileCount = req.body.fileCount
+    console.log(fileCount)
+    if (fileCount == 3){
+        var input = {
             title : req.body.title,
             paragraph_one : req.body.paragraph_one,
             paragraph_two : req.body.paragraph_two,
@@ -112,8 +114,8 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
             image3_path : req.files[2].path,
             carousel : req.body.carousel
         }
-    } if (req.body.fileCount == 2){
-        input = {
+    } if (fileCount == 2){
+        var input = {
             title : req.body.title,
             paragraph_one : req.body.paragraph_one,
             paragraph_two : req.body.paragraph_two,
@@ -126,8 +128,8 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
             image2_path : req.files[1].path,
             carousel : req.body.carousel
         }
-    } if (req.body.fileCount == 1) {
-        input = {
+    } if (fileCount == 1) {
+        var input = {
             title : req.body.title,
             paragraph_one : req.body.paragraph_one,
             paragraph_two : req.body.paragraph_two,
