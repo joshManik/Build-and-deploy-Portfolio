@@ -90,7 +90,7 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
     const upload = {
         title : req.body.text,
         path1 : "http://178.62.92.215:4000/" + req.files[0].path,
-        path2 : "http://localhost:4000/" + req.files[1].path
+        path2 : req.files[1].path
     }
 
     const uploaderd = {
