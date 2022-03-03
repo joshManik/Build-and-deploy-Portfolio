@@ -96,30 +96,6 @@ app.get('/pastprojects/all', (req, res) => {
     });
 });
 
-app.post('/create', upload.array('images', 3), (req, res) => {
-    const qr = `INSERT INTO ${DB_TABLE} SET ?`
-    console.log("Server is here")
-    if (req.body.carousel == 'true') {
-        var carousel = 1
-    } else {
-        var carousel = 0
-    }
-
-    var set = {
-        title : req.body.title,
-        github_link : req.body.github_link,
-        image1_path : req.files[0].path,
-        carousel : carousel
-    }
-
-    DB.query(qr, set, (err, result) => {
-        if (err) throw err;
-        console.log(result)
-    });
-
-    res.send(set)
-
-})
 
 app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
     var fileCount = req.body.fileCount
