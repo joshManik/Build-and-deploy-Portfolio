@@ -41,11 +41,14 @@ const initialQuery = `CREATE TABLE IF NOT EXISTS ${DB_TABLE} (
     title VARCHAR(255) NOT NULL,
     paragraph_one TEXT NOT NULL,
     paragraph_two TEXT NOT NULL,
+    tech_used VARCHAR(255) NOT NULL,
     project_live BOOLEAN NOT NULL,
     project_link VARCHAR(255),
     github_live BOOLEAN NOT NULL,
     github_link VARCHAR(255),
     image1_path VARCHAR(255) NOT NULL,
+    image2_path VARCHAR(255) NOT NULL,
+    image3_path VARCHAR(255) NOT NULL,
     carousel BOOLEAN NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`
