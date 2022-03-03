@@ -236,7 +236,11 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
 
         console.log(row)
 
+        input.insertId = row.insertId
+
     })
+
+    
 
     res.send(input)
 })
