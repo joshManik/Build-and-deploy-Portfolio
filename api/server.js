@@ -156,7 +156,8 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
             image1_path : req.files[0].path,
             image2_path : req.files[1].path,
             image3_path : req.files[2].path,
-            carousel : carousel
+            carousel : carousel,
+            ID : 0
         }
 
     } if (fileCount == 2){
@@ -190,7 +191,8 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
             github_link : req.body.github_link,
             image1_path : req.files[0].path,
             image2_path : req.files[1].path,
-            carousel : carousel
+            carousel : carousel,
+            ID : 0
         }
 
     } if (fileCount == 1) {
@@ -223,7 +225,8 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
             github_live : github_live,
             github_link : req.body.github_link,
             image1_path : req.files[0].path,
-            carousel : carousel
+            carousel : carousel,
+            ID : 0
         }
 
     }
@@ -234,15 +237,10 @@ app.post('/pastprojects/create', upload.array('images', 3), (req, res) => {
     DB.query(QUERY, input, (err, row) => {
         if (err) throw err;
 
-        console.log(row)
-
-        input.insertId = row.insertId
-
+        var ID = row.insertId
+        input["ID"] = ID
+        res.send(input)
     })
-
-    
-
-    res.send(input)
 })
 
 app.listen(process.env.SERVER_PORT, () => {
