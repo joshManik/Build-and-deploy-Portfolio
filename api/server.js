@@ -47,8 +47,8 @@ const initialQuery = `CREATE TABLE IF NOT EXISTS ${DB_TABLE} (
     github_live BOOLEAN NOT NULL,
     github_link VARCHAR(255),
     image1_path VARCHAR(255) NOT NULL,
-    image2_path VARCHAR(255) NOT NULL,
-    image3_path VARCHAR(255) NOT NULL,
+    image2_path VARCHAR(255),
+    image3_path VARCHAR(255),
     carousel BOOLEAN NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`
